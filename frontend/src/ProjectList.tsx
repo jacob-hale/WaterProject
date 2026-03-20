@@ -4,12 +4,13 @@ import type { Project } from './types/Projects';
 function ProjectList() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [pageNum, setPageNum] = useState<number>(1);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const response = await fetch(
-          `https://localhost:5000/Water/AllProjects?pageHowMany=${pageSize}`
+          `https://localhost:5000/Water/AllProjects?pageSize=${pageSize}&pageNum=${pageNum}`
         );
         const data = await response.json();
         setProjects(data);
@@ -19,7 +20,7 @@ function ProjectList() {
     };
 
     fetchProjects();
-  }, [pageSize]);
+  }, [pageSize, pageNum]);
 
   return (
     <>
