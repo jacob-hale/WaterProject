@@ -16,7 +16,7 @@ namespace WaterProject.API.Controllers
         }
 
         [HttpGet("AllProjects")]
-        public IActionResult GetProjects(int pageSize = 10, int pageNum = 1)
+        public ProjectListData GetProjects(int pageSize = 10, int pageNum = 1)
         {
             var x = _context.Projects
                 .Skip((pageNum - 1) * pageNum)
@@ -30,7 +30,7 @@ namespace WaterProject.API.Controllers
                 Projects = x,
                 TotalNumProjects = totalNumProjects
             };
-            return Ok(blah);
+            return blah;
         }
 
         [HttpGet("FunctionalProjects")]
