@@ -5,7 +5,7 @@ using WaterProject.API.Data;
 
 namespace WaterProject.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class WaterController : ControllerBase
     {
@@ -15,9 +15,17 @@ namespace WaterProject.API.Controllers
             _context = temp;
         }
 
-        public IEnumerable<Project> Get()
+        [HttpGet("AllProjects")]
+        public IEnumerable<Project> GetProjects()
         {
             var x = _context.Projects.ToList();
+            return x;
+        }
+
+        [HttpGet("FunctionalProjects")]
+        public IEnumerable<Project> GetFunctionalProjects()
+        {
+            var x = _context.Projects.Where(p => p.ProjectFunctionalityStatus == "Functional").ToList();
             return x;
         }
 

@@ -12,6 +12,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<WaterDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("WaterConnection")));
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +21,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseCors(x => x.WithOrigins("http://localhost:3000"));
 
 app.UseHttpsRedirection();
 
