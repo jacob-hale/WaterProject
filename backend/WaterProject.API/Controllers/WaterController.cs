@@ -19,7 +19,7 @@ namespace WaterProject.API.Controllers
         public ProjectListData GetProjects(int pageSize = 10, int pageNum = 1)
         {
             var x = _context.Projects
-                .Skip((pageNum - 1) * pageNum)
+                .Skip((pageNum - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
