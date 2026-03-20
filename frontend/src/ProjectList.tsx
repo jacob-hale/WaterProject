@@ -38,6 +38,16 @@ function ProjectList() {
           </div>
         </div>
       ))}
+
+      <br/>
+      <label>
+        Results per page:
+        <select>
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </label>
     </>
   );
 }
