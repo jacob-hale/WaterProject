@@ -2,37 +2,42 @@ import { useEffect, useState } from 'react';
 import type { Project } from './types/Projects';
 
 function ProjectList() {
-    const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
-useEffect(() => {
+  useEffect(() => {
     const fetchProjects = async () => {
-        try {
-            const response = await fetch('https://localhost:5000/Water/AllProjects');
-            const data = await response.json();
-            setProjects(data);
-        } catch (error) {
-            console.error('Error fetching projects:', error);
-        }
+      try {
+        const response = await fetch(
+          'https://localhost:5000/Water/AllProjects'
+        );
+        const data = await response.json();
+        setProjects(data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
     };
 
     fetchProjects();
-}, []);
+  }, []);
 
   return (
     <>
       <h1>Water Projects</h1>
-      <br/>
-      {projects.map((p) => 
-    <div id="projectCard">
-        <h3>{p.projectName}</h3>
-        <ul>
-            <li>Type: {p.projectType}</li>
-            <li>Regional Program: {p.projectRegionalProgram}</li>
-            <li>Impact: {p.projectImpact} Individuals Served</li>
-            <li>Phase: {p.projectPhase}</li>
-            <li>Functionality Status: {p.projectFunctionalityStatus}</li>
-        </ul>
-    </div>)}
+      <br />
+      {projects.map((p) => (
+        <div id="projectCard" className="card" key={p.projectId}>
+          <h3 className="card-title">{p.projectName}</h3>
+          <div className="card-body">
+            <ul className='list-unstyled'>
+              <li><strong>Type:</strong> {p.projectType}</li>
+              <li><strong>Regional Program:</strong> {p.projectRegionalProgram}</li>
+              <li><strong>Impact:</strong> {p.projectImpact} Individuals Served</li>
+              <li><strong>Phase:</strong> {p.projectPhase}</li>
+              <li><strong>Functionality Status:</strong> {p.projectFunctionalityStatus}</li>
+            </ul>
+          </div>
+        </div>
+      ))}
     </>
   );
 }
