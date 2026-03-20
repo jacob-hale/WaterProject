@@ -16,9 +16,9 @@ namespace WaterProject.API.Controllers
         }
 
         [HttpGet("AllProjects")]
-        public IEnumerable<Project> GetProjects()
+        public IEnumerable<Project> GetProjects(int pageHowMany)
         {
-            var x = _context.Projects.Take(5).ToList();
+            var x = _context.Projects.Take(pageHowMany).ToList();
             return x;
         }
 
