@@ -1,13 +1,14 @@
-import './App.css'
-import ProjectList from './ProjectList'
+import './App.css';
+import CategoryFilter from './CategoryFilter';
+import ProjectList from './ProjectList';
 
 function App() {
-
   return (
     <>
-    <ProjectList/>
+      <CategoryFilter />
+      <ProjectList />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

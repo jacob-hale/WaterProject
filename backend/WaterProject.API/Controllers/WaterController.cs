@@ -33,11 +33,14 @@ namespace WaterProject.API.Controllers
             return blah;
         }
 
-        [HttpGet("FunctionalProjects")]
-        public IEnumerable<Project> GetFunctionalProjects()
+        [HttpGet("GetProjectTypes")]
+        public IActionResult GetProjectTypes()
         {
-            var x = _context.Projects.Where(p => p.ProjectFunctionalityStatus == "Functional").ToList();
-            return x;
+            var projectTypes = _context.Projects
+                .Select(p => p.ProjectType)
+                .Distinct()
+                .ToList();
+            return Ok(projectTypes);
         }
 
 
