@@ -27,7 +27,7 @@ export const CartProvider = ({children}: { children: ReactNode }) => {
   };
 
   const removeFromCart = (projectId: number) => {
-    setCart((prevCart) => prevCart.filter((c) => c.projectId === projectId));
+    setCart((prevCart) => prevCart.filter((c) => c.projectId !== projectId));
   };
 
   const clearCart = () => {

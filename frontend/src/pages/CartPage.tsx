@@ -4,7 +4,7 @@ import type { CartItem } from '../types/CartItem';
 
 function CartPage() {
   const navigate = useNavigate();
-  const { cart } = useCart();
+  const { cart, removeFromCart } = useCart();
   return (
     <div>
       <h2>Your Cart</h2>
@@ -17,6 +17,9 @@ function CartPage() {
               <li key={item.projectId}>
                 <strong>{item.projectName}</strong> - $
                 {item.donationAmount.toFixed(2)}
+                <button onClick={() => removeFromCart(item.projectId)}>
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
