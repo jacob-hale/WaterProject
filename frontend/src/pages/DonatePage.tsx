@@ -11,7 +11,7 @@ function DonatePage() {
 
       <div>
         <input type="number" placeholder="Enter donation amount" />
-        <button className="btn btn-primary">Add to Cart</button>
+        <button className="btn btn-primary" onClick={() => navigate("/cart")} >Add to Cart</button>
       </div>
       <button onClick={() => navigate("/projects")}>Go Back</button>
     </>
