@@ -8,9 +8,8 @@ function ProjectsPage() {
 
   return (
     <div className="container">
-      <div className="row bg-primary text-white">
-        <WelcomeBand />
-      </div>
+      <WelcomeBand />
+
       <div className="row">
         <div className="col-md-3">
           <CategoryFilter
