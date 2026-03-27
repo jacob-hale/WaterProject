@@ -1,19 +1,41 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import WelcomeBand from '../components/WelcomeBand';
+import { useCart } from '../context/CartContext';
+import type { CartItem } from '../types/CartItem';
+import { useState } from 'react';
 
 function DonatePage() {
-    const navigate = useNavigate();
-    const { projectName } = useParams<{ projectName: string }>();
+  const navigate = useNavigate();
+  const { projectName, projectId } = useParams();
+  const { addToCart } = useCart();
+  const [donationAmount, setDonationAmount] = useState<number>(0);
+
+  const handleAddToCart = () => {
+    const newItem: CartItem = {
+      projectId: Number(projectId),
+      projectName: projectName || "No Project Found",
+      donationAmount,
+    };
+    addToCart(newItem);
+    navigate('/cart');
+  };
   return (
     <>
       <WelcomeBand />
       <h2>Donate to {projectName}</h2>
 
       <div>
-        <input type="number" placeholder="Enter donation amount" />
-        <button className="btn btn-primary" onClick={() => navigate("/cart")} >Add to Cart</button>
+        <input
+          type="number"
+          placeholder="Enter donation amount"
+          value={donationAmount}
+          onChange={(x) => setDonationAmount(Number(x.target.value))}
+        />
+        <button className="btn btn-primary" onClick={handleAddToCart}>
+          Add to Cart
+        </button>
       </div>
-      <button onClick={() => navigate("/projects")}>Go Back</button>
+      <button onClick={() => navigate('/projects')}>Go Back</button>
     </>
   );
 }

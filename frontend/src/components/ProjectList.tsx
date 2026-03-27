@@ -55,7 +55,7 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
                 {p.projectFunctionalityStatus}
               </li>
             </ul>
-            <button className="btn btn-success" onClick={() => navigate(`/donate/${p.projectName}`)}>Donate</button>
+            <button className="btn btn-success" onClick={() => navigate(`/donate/${p.projectName}/${p.projectId}`)}>Donate</button>
           </div>
         </div>
       ))}
