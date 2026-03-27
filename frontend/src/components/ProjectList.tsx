@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Project } from './types/Projects';
+import type { Project } from '../types/Projects';
 
 function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
   const [projects, setProjects] = useState<Project[]>([]);
