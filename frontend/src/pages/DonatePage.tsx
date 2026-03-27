@@ -1,12 +1,13 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import WelcomeBand from '../components/WelcomeBand';
 
 function DonatePage() {
     const navigate = useNavigate();
+    const { projectName } = useParams<{ projectName: string }>();
   return (
     <>
       <WelcomeBand />
-      <h2>Donate</h2>
+      <h2>Donate to {projectName}</h2>
 
       <div>
         <input type="number" placeholder="Enter donation amount" />
