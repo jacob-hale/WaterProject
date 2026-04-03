@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Project } from '../types/Projects';
-import { fetchProjects } from '../api/ProjectsAPI';
+import { deleteProject, fetchProjects } from '../api/ProjectsAPI';
 import Pagination from '../components/Pagination';
 import NewProjectForm from '../components/NewProjectForm';
 import EditProjectForm from '../components/EditProjectForm';
@@ -30,6 +30,22 @@ const AdminProjectPage = () => {
 
     loadProjects();
   }, [pageSize, pageNum]);
+
+  const handleDelete = async (projectId: number) => {
+    // Implement delete functionality here, e.g., call deleteProject API and refresh list
+    const confirmDelete = window.confirm('Are you sure you want to delete this project?');
+    if (!confirmDelete) {
+        return;
+    }
+        try {
+            // await deleteProject(projectId);
+            await deleteProject(projectId);
+            setProjects(projects.filter((p) => p.projectId !== projectId));
+        } catch (error) {
+            alert('Failed to delete project: ' + (error as Error).message);
+        }
+    };
+
   if (loading) {
     return <div>Loading projects...</div>;
   }
@@ -106,7 +122,7 @@ const AdminProjectPage = () => {
                   Edit
                 </button>
                 <button
-                  
+                  onClick={() => handleDelete(p.projectId)}
                   className="btn btn-danger text-white px-2 py-1 rounded w-100"
                 >
                   Delete
