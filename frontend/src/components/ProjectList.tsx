@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Project } from '../types/Projects';
 import { useNavigate } from 'react-router-dom';
 import { fetchProjects } from '../api/ProjectsAPI';
+import Pagination from './Pagination';
 
 function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -14,12 +15,10 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
 
   useEffect(() => {
     const loadProjects = async () => {
-      
       try {
         setLoading(true);
         const data = await fetchProjects(pageSize, pageNum, selectedCategories);
 
-      
         setProjects(data.projects);
         setTotalPages(Math.ceil(data.totalNumProjects / pageSize));
       } catch (error) {
@@ -63,45 +62,28 @@ function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
                 {p.projectFunctionalityStatus}
               </li>
             </ul>
-            <button className="btn btn-success" onClick={() => navigate(`/donate/${p.projectName}/${p.projectId}`)}>Donate</button>
+            <button
+              className="btn btn-success"
+              onClick={() =>
+                navigate(`/donate/${p.projectName}/${p.projectId}`)
+              }
+            >
+              Donate
+            </button>
           </div>
         </div>
+        
       ))}
-
-      <button disabled={pageNum === 1} onClick={() => setPageNum(pageNum - 1)}>
-        Previous
-      </button>
-      {[...Array(totalPages)].map((_, index) => (
-        <button
-          key={index + 1}
-          onClick={() => setPageNum(index + 1)}
-          disabled={pageNum === index + 1}
-        >
-          {index + 1}
-        </button>
-      ))}
-
-      <button
-        disabled={pageNum === totalPages}
-        onClick={() => setPageNum(pageNum + 1)}
-      >
-        Next
-      </button>
-      <br />
-      <label>
-        Results per page:
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-            setPageNum(1); // Reset to first page when page size changes
-          }}
-        >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-        </select>
-      </label>
+      <Pagination
+            currentPage={pageNum}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onPageChange={setPageNum}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPageNum(1); // Reset to first page when page size changes
+            }}
+          />
     </>
   );
 }

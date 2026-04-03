@@ -53,6 +53,9 @@ const AdminProjectPage = () => {
                 <td>{p.projectImpact}</td>
                 <td>{p.projectPhase}</td>
                 <td>{p.projectFunctionalityStatus}</td>
+                <td><button onClick={() => console.log(`Edit project ${p.projectId}`)}  className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>
+                <button onClick={() => console.log(`Delete project ${p.projectId}`)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                </td>
             </tr>
           ))}
         </tbody>
