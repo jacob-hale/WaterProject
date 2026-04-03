@@ -5,7 +5,7 @@ interface FetchProjectsResponse {
   totalNumProjects: number;
 }
 
-const API_BASE_URL = 'https://localhost:5000/Water';
+const API_BASE_URL = 'https://waterproject-hale-backend-fpajhtg4hjbadybs.francecentral-01.azurewebsites.net/Water';
 
 export const fetchProjects = async (
   pageSize: number,
