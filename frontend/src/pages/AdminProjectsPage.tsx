@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
 import type { Project } from '../types/Projects';
 import { fetchProjects } from '../api/ProjectsAPI';
+import Pagination from '../components/Pagination';
 
 const AdminProjectPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0)
 
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        const data = await fetchProjects(10, 1, []); // Fetch first page with default page size and no filters
+        const data = await fetchProjects(pageSize, pageNum, []); // Fetch first page with default page size and no filters
         setProjects(data.projects);
+        setTotalPages(Math.ceil(data.totalNumProjects / pageSize));
       } catch (err) {
         setError((err as Error).message);
       } finally {
@@ -20,7 +25,7 @@ const AdminProjectPage = () => {
     };
 
     loadProjects();
-  }, []);
+  }, [pageSize, pageNum]);
   if (loading) {
     return <div>Loading projects...</div>;
   }
@@ -60,6 +65,16 @@ const AdminProjectPage = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+            currentPage={pageNum}
+            totalPages={totalPages}
+            pageSize={pageSize}
+            onPageChange={setPageNum}
+            onPageSizeChange={(newSize) => {
+              setPageSize(newSize);
+              setPageNum(1); // Reset to first page when page size changes
+            }}
+          />
     </div>
   );
 };
