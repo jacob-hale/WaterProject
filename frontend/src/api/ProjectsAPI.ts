@@ -39,13 +39,33 @@ export const addProject = async (newProject: Project): Promise<Project> => {
             },
             body: JSON.stringify(newProject),
         });
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
         console.error('Error adding project:', error);
+        throw error;
+    }
+};
+
+export const updateProject = async (projectId: number, updatedProject: Project): Promise<Project> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/UpdateProject/${projectId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedProject),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating project:', error);
         throw error;
     }
 };

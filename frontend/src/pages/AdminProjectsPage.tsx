@@ -3,6 +3,7 @@ import type { Project } from '../types/Projects';
 import { fetchProjects } from '../api/ProjectsAPI';
 import Pagination from '../components/Pagination';
 import NewProjectForm from '../components/NewProjectForm';
+import EditProjectForm from '../components/EditProjectForm';
 
 const AdminProjectPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -12,6 +13,7 @@ const AdminProjectPage = () => {
   const [pageNum, setPageNum] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [showForm, setShowForm] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -60,6 +62,19 @@ const AdminProjectPage = () => {
         />
       )}
 
+      {editingProject && (
+        <EditProjectForm
+          project={editingProject}
+          onSuccess={() => {
+            setEditingProject(null);
+            fetchProjects(pageSize, pageNum, []).then((data) =>
+              setProjects(data.projects)
+            );
+          }}
+          onCancel={() => setEditingProject(null)}
+        />
+      )}
+
       <table className="table table-bordered table-striped">
         <thead>
           <tr className="table-dark">
@@ -85,13 +100,13 @@ const AdminProjectPage = () => {
               <td>{p.projectFunctionalityStatus}</td>
               <td>
                 <button
-                  onClick={() => console.log(`Edit project ${p.projectId}`)}
+                  onClick={() => setEditingProject(p)}
                   className="btn btn-primary text-white px-2 py-1 rounded w-100"
                 >
                   Edit
                 </button>
                 <button
-                  onClick={() => console.log(`Delete project ${p.projectId}`)}
+                  
                   className="btn btn-danger text-white px-2 py-1 rounded w-100"
                 >
                   Delete
