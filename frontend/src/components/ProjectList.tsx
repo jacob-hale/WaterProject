@@ -1,35 +1,43 @@
 import { useEffect, useState } from 'react';
 import type { Project } from '../types/Projects';
 import { useNavigate } from 'react-router-dom';
+import { fetchProjects } from '../api/ProjectsAPI';
 
 function ProjectList({ selectedCategories }: { selectedCategories: string[] }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      const categoryParams = selectedCategories
-        .map((cat) => `projectTypes=${encodeURIComponent(cat)}`)
-        .join('&');
+    const loadProjects = async () => {
+      
       try {
-        const response = await fetch(
-          `https://localhost:5000/Water/AllProjects?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
-        );
-        const data = await response.json();
+        setLoading(true);
+        const data = await fetchProjects(pageSize, pageNum, selectedCategories);
+
+      
         setProjects(data.projects);
-        setTotalItems(data.totalNumProjects);
-        setTotalPages(Math.ceil(totalItems / pageSize));
+        setTotalPages(Math.ceil(data.totalNumProjects / pageSize));
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        setError((error as Error).message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProjects();
-  }, [pageSize, pageNum, totalItems, selectedCategories]);
+    loadProjects();
+  }, [pageSize, pageNum, selectedCategories]);
+
+  if (loading) {
+    return <div>Loading projects...</div>;
+  }
+  if (error) {
+    return <div className="text-red-500">Error loading projects: {error}</div>;
+  }
 
   return (
     <>
