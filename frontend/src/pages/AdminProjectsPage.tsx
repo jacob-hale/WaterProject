@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Project } from '../types/Projects';
 import { fetchProjects } from '../api/ProjectsAPI';
 import Pagination from '../components/Pagination';
+import NewProjectForm from '../components/NewProjectForm';
 
 const AdminProjectPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -9,7 +10,8 @@ const AdminProjectPage = () => {
   const [loading, setLoading] = useState(true);
   const [pageSize, setPageSize] = useState<number>(10);
   const [pageNum, setPageNum] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0)
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -36,9 +38,31 @@ const AdminProjectPage = () => {
   return (
     <div>
       <h1>Admin - Projects</h1>
-      <table className='table table-bordered table-striped'>
+
+        {!showForm && (
+          <button
+          className="mb-4 btn btn-success text-white px-4 py-2 rounded"
+            onClick={() => setShowForm(true)}
+          >
+            Add Project
+          </button>
+        )}
+
+      {showForm && (
+        <NewProjectForm
+          onSuccess={() => {
+            setShowForm(false);
+            fetchProjects(pageSize, pageNum, []).then((data) =>
+              setProjects(data.projects)
+            );
+          }}
+          onCancel={() => setShowForm(false)}
+        />
+      )}
+
+      <table className="table table-bordered table-striped">
         <thead>
-          <tr className='table-dark'>
+          <tr className="table-dark">
             <th>ID</th>
             <th>Name</th>
             <th>Type</th>
@@ -47,36 +71,46 @@ const AdminProjectPage = () => {
             <th>Phase</th>
             <th>Status</th>
             <th>Actions</th>
-
           </tr>
         </thead>
         <tbody>
           {projects.map((p) => (
-            <tr key={p.projectId} >
-                <td>{p.projectId}</td>
-                <td>{p.projectName}</td>
-                <td>{p.projectType}</td>
-                <td>{p.projectRegionalProgram}</td>
-                <td>{p.projectImpact}</td>
-                <td>{p.projectPhase}</td>
-                <td>{p.projectFunctionalityStatus}</td>
-                <td><button onClick={() => console.log(`Edit project ${p.projectId}`)}  className="btn btn-primary text-white px-2 py-1 rounded w-100">Edit</button>
-                <button onClick={() => console.log(`Delete project ${p.projectId}`)} className="btn btn-danger text-white px-2 py-1 rounded w-100">Delete</button>
-                </td>
+            <tr key={p.projectId}>
+              <td>{p.projectId}</td>
+              <td>{p.projectName}</td>
+              <td>{p.projectType}</td>
+              <td>{p.projectRegionalProgram}</td>
+              <td>{p.projectImpact}</td>
+              <td>{p.projectPhase}</td>
+              <td>{p.projectFunctionalityStatus}</td>
+              <td>
+                <button
+                  onClick={() => console.log(`Edit project ${p.projectId}`)}
+                  className="btn btn-primary text-white px-2 py-1 rounded w-100"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => console.log(`Delete project ${p.projectId}`)}
+                  className="btn btn-danger text-white px-2 py-1 rounded w-100"
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <Pagination
-            currentPage={pageNum}
-            totalPages={totalPages}
-            pageSize={pageSize}
-            onPageChange={setPageNum}
-            onPageSizeChange={(newSize) => {
-              setPageSize(newSize);
-              setPageNum(1); // Reset to first page when page size changes
-            }}
-          />
+        currentPage={pageNum}
+        totalPages={totalPages}
+        pageSize={pageSize}
+        onPageChange={setPageNum}
+        onPageSizeChange={(newSize) => {
+          setPageSize(newSize);
+          setPageNum(1); // Reset to first page when page size changes
+        }}
+      />
     </div>
   );
 };

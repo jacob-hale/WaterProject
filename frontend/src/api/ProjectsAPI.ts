@@ -5,6 +5,8 @@ interface FetchProjectsResponse {
   totalNumProjects: number;
 }
 
+const API_BASE_URL = 'https://localhost:5000/Water';
+
 export const fetchProjects = async (
   pageSize: number,
   pageNum: number,
@@ -15,7 +17,7 @@ export const fetchProjects = async (
         .map((cat) => `projectTypes=${encodeURIComponent(cat)}`)
         .join('&');
         const response = await fetch(
-          `https://localhost:5000/Water/AllProjects?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
+          `${API_BASE_URL}/AllProjects?pageSize=${pageSize}&pageNum=${pageNum}${selectedCategories.length ? `&${categoryParams}` : ''}`
         );
 
         if (!response.ok) {
@@ -24,6 +26,26 @@ export const fetchProjects = async (
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
+        throw error;
+    }
+};
+
+export const addProject = async (newProject: Project): Promise<Project> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/AddProject`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newProject),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error adding project:', error);
         throw error;
     }
 };
