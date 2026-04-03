@@ -36,9 +36,9 @@ const AdminProjectPage = () => {
   return (
     <div>
       <h1>Admin - Projects</h1>
-      <table>
+      <table className='table table-bordered table-striped'>
         <thead>
-          <tr>
+          <tr className='table-dark'>
             <th>ID</th>
             <th>Name</th>
             <th>Type</th>
@@ -46,11 +46,13 @@ const AdminProjectPage = () => {
             <th>Impact</th>
             <th>Phase</th>
             <th>Status</th>
+            <th>Actions</th>
+
           </tr>
         </thead>
         <tbody>
           {projects.map((p) => (
-            <tr key={p.projectId}>
+            <tr key={p.projectId} >
                 <td>{p.projectId}</td>
                 <td>{p.projectName}</td>
                 <td>{p.projectType}</td>
@@ -58,8 +60,8 @@ const AdminProjectPage = () => {
                 <td>{p.projectImpact}</td>
                 <td>{p.projectPhase}</td>
                 <td>{p.projectFunctionalityStatus}</td>
-                <td><button onClick={() => console.log(`Edit project ${p.projectId}`)}  className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>
-                <button onClick={() => console.log(`Delete project ${p.projectId}`)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
+                <td><button onClick={() => console.log(`Edit project ${p.projectId}`)}  className="btn btn-primary text-white px-2 py-1 rounded w-100">Edit</button>
+                <button onClick={() => console.log(`Delete project ${p.projectId}`)} className="btn btn-danger text-white px-2 py-1 rounded w-100">Delete</button>
                 </td>
             </tr>
           ))}
