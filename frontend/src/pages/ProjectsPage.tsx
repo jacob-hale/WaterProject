@@ -11,7 +11,7 @@ function ProjectsPage() {
     <div className="container mt-4">
       <CartSummary />
       <WelcomeBand />
-
+      <button onClick={() => (window.location.href = '/adminprojects')} className='btn btn-success'>Manage Projects</button>
       <div className="row">
         <div className="col-md-3">
           <CategoryFilter
